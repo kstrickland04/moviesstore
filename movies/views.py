@@ -65,11 +65,12 @@ def delete_review(request, id, review_id):
     return redirect('movies.show', id=id)
 
 def petition_list(request):
-    petitions = MoviePetition.object.all()
+    petitions = MoviePetition.objects.all()
     
     template_data = {}
     template_data['title'] = 'Movie Petitions'
     template_data['petitions'] = petitions
+
     return render(request, 'movies/petition_list.html', {'template_data' : template_data})
 
 @login_required
