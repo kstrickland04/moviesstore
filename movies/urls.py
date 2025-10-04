@@ -10,5 +10,5 @@ urlpatterns = [
     path('petitions/', views.petition_list, name='movies.petition_list'),
     path('petitions/create/', views.petition_create, name='movies.petition_create'),
     path('petition/<int:petition_id>/', views.petition_detail, name='movies.petition_detail'),
-    path('petition/<int:petition_id/vote/', views.petition_vote, name='movies.petition_vote'),
+    path('petition/<int:petition_id>/vote/', views.petition_vote, name='movies.petition_vote'),
 ]
