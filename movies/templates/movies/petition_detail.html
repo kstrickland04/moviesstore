@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<div class="p-3">
+    <div class="container">
+        <div class="row mt-3">
+            <div class="col-md-8 mx-auto">
+
+                <!-- Messages -->
+                 {% if messages %}
+                 {% for message in messages %}
+                  <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                  </div>
+                 {% endfor %}
+                 {% endif %}
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h4 class="mb-0">{{ template_data.petition.movie_title }}</h4>
+                            <span class="badge bg-{% if template_data.petition.status == 'pending' %}warning{% elif template_data.petition.status == 'approved' %}success{% else %}danger{% endif %} fs-6">
+                                {{ template_data.petition.get_status_display }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {% if template_data.petition.year %}
+                                <p class="mb-1"><strong>Release Year:</strong> {{ template_data.petition.year }}</p>
+                                {% endif %}
+                                {% if template.data.petition.director %}
+                                <p class="mb-1"><strong>Director:</strong> {{ template_data.petition.director}}</p>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <p class="mb-1"><strong>Created by:</strong> {{ template_data.petition.created_by.username }}</p>
+                                <p class="mb-1"><strong>Created:</strong> {{ template_data.petition.created_at|date:"F d, Y" }}</p>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h5>Description</h5>
+                            <p class="text-muted">{{ template_data.petition.description|linebreaks }}</p>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-0">
+                                    <i class="fas fa-vote-yea text-primary"></i>
+                                    {{ template_data.petition.get_vote_count }} vote{{ template_data.petition.get_vote_count|pluralize }}
+                                </h5>
+                                <small class="text-muted">Help us decide by voting!</small>
+                            </div>
+
+                            {% if user.is.authenticated %}
+                                {% if template_data.user_has_voted %}
+                                    <div class="text-success">
+                                        <i class="fas fa-check-circle fa-2x"></i>
+                                        <p class="mb-0">You've voted!</p>
+                                    </div>
+                                {% else %}
+                                    <form method="POST" action="{% url 'movies.petition_vote' petition_id=template_data.petition.id %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-success btn-lg">
+                                            <i class="fas fa-thumbs-up"></i> Vote for this Movie
+                                        </button>
+                                    </form>
+                                {% endif%}
+                            {% else %}
+                                <div class="text-center">
+                                    <p class="text-muted">Please <a href="{% url 'accounts.login' %}">login</a> to vote</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <div class="d-flex justify-content-between">
+                                <a href="{% url 'movies.petition_list' %}" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-left"></i> Back to Petitions
+                                </a>
+                                {% if user.is_authenticated and user == template_data.petition.created_by %}
+                                 <small class="text-muted align-self-center">You created this petition</small>
+                                {% endif %}
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content%}
