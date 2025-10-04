@@ -116,11 +116,11 @@ def petition_vote(request, petition_id):
 
     if request.method == 'POST':
         try:
-            vote = PetitionVote(petition = petition, id = petition_id)
+            vote = PetitionVote(petition = petition, user = request.user)
             vote.save()
             messages.success(request, f'You have successfully voted for "{petition.movie_title}"!')
         except IntegrityError:
             messages.error(request, 'You have already voted for this petition.')
     
-    return redirect('movie.petition_detail', petition_id = petition_id)
+    return redirect('movies.petition_detail', petition_id = petition_id)
         

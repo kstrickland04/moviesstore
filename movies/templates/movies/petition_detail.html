@@ -32,7 +32,7 @@
                                 {% if template_data.petition.year %}
                                 <p class="mb-1"><strong>Release Year:</strong> {{ template_data.petition.year }}</p>
                                 {% endif %}
-                                {% if template.data.petition.director %}
+                                {% if template_data.petition.director %}
                                 <p class="mb-1"><strong>Director:</strong> {{ template_data.petition.director}}</p>
                                 {% endif %}
                             </div>
@@ -56,7 +56,7 @@
                                 <small class="text-muted">Help us decide by voting!</small>
                             </div>
 
-                            {% if user.is.authenticated %}
+                            {% if user.is_authenticated %}
                                 {% if template_data.user_has_voted %}
                                     <div class="text-success">
                                         <i class="fas fa-check-circle fa-2x"></i>
@@ -69,7 +69,7 @@
                                             <i class="fas fa-thumbs-up"></i> Vote for this Movie
                                         </button>
                                     </form>
-                                {% endif%}
+                                {% endif %}
                             {% else %}
                                 <div class="text-center">
                                     <p class="text-muted">Please <a href="{% url 'accounts.login' %}">login</a> to vote</p>
